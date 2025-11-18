@@ -22,8 +22,6 @@ Students reskin a working Tetris clone with Thanksgiving assets:
 - Implement "Gobble gobble!" sound on line clear
 - Learn about sprite loading and audio playback
 
-**Time:** ~1 hour | **Difficulty:** ⭐⭐ (Easy)
-
 ---
 
 ### 2. Pumpkin Catapult Physics Game
@@ -35,8 +33,6 @@ Students configure a projectile physics game:
 - Tune angle, power, and gravity parameters
 - Verify collision detection works correctly
 - Learn about projectile motion and game balance
-
-**Time:** ~1 hour | **Difficulty:** ⭐⭐⭐ (Medium)
 
 ---
 
@@ -51,8 +47,6 @@ Students set up an endless runner:
 - Verify scoring system functions
 - Learn about game loops and collision systems
 
-**Time:** ~1 hour | **Difficulty:** ⭐⭐⭐ (Medium)
-
 ---
 
 ### 4. Escape the Stuffing (Maze Game)
@@ -65,8 +59,6 @@ Students customize a maze escape game:
 - Add turkey player sprite
 - Confirm countdown timer and controls
 - Learn about recursive backtracking algorithms
-
-**Time:** ~1 hour | **Difficulty:** ⭐⭐⭐⭐ (Advanced)
 
 ---
 
@@ -98,8 +90,6 @@ Students customize a maze escape game:
 
 4. **Follow the README.md in each project folder!**
 
----
-
 ## Learning Objectives
 
 By completing all four projects, students will learn:
@@ -125,38 +115,6 @@ By completing all four projects, students will learn:
 
 ---
 
-## Repository Structure
-
-```
-thnxgivin/
-├── README.md                    # This file
-├── turkey-tetris/
-│   ├── README.md               # Project-specific instructions
-│   ├── index.html
-│   ├── game.js
-│   ├── assets/squares/         # Student adds 7 texture images
-│   └── sounds/                 # Student adds 3+ sound files
-├── pumpkin-catapult/
-│   ├── README.md
-│   ├── index.html
-│   ├── game.js
-│   └── assets/                 # Student adds pumpkin & target images
-├── turkey-dash/
-│   ├── README.md
-│   ├── index.html
-│   ├── config.js              # Student edits game parameters
-│   ├── game.js
-│   └── assets/                # Student adds runner & obstacle sprites
-└── escape-stuffing/
-    ├── README.md
-    ├── index.html
-    ├── maze.js                # Maze generation algorithm
-    ├── game.js                # Student edits appearance
-    └── assets/                # Student adds turkey sprite
-```
-
----
-
 ## Asset Recommendations
 
 ### Where to Find Free Assets
@@ -175,14 +133,6 @@ thnxgivin/
 - Use drawing tools (Paint, GIMP, Photoshop, Procreate)
 - Record sounds with your phone
 - Use online sprite/sound generators
-
-### Recommended Image Sizes
-- **Tetris blocks:** 30×30 px
-- **Pumpkin projectile:** 40×40 px
-- **Catapult targets:** 60×80 px (turkey), 100×100 px (barn)
-- **Turkey runner:** 50×50 px
-- **Runner obstacles:** 40-50 px square
-- **Maze turkey:** 40×40 px
 
 **Tip:** PNG files with transparent backgrounds work best!
 
@@ -212,34 +162,6 @@ thnxgivin/
 - Adjust parameters in config files
 - Test with different values iteratively
 - Read comments in code for guidance
-
----
-
-## Teaching Tips
-
-### For Instructors
-
-**Recommended Order:**
-1. **Turkey Tetris** - Easiest, focuses on asset replacement
-2. **Pumpkin Catapult** - Introduces physics concepts
-3. **Turkey Dash** - More complex with continuous gameplay
-4. **Escape the Stuffing** - Most advanced with procedural generation
-
-**Timing:**
-- Plan for **1-hour sessions per game**
-- Or 4-hour workshop covering all projects
-- Or 2-hour session covering 2 games
-
-**Differentiation:**
-- **Beginners:** Focus on asset replacement tasks only
-- **Intermediate:** Complete all core tasks
-- **Advanced:** Tackle bonus challenges
-
-**Assessment Ideas:**
-- Check that games run successfully
-- Review customized assets
-- Evaluate understanding of changed parameters
-- Challenge students to explain how features work
 
 ---
 
@@ -278,8 +200,6 @@ These projects are educational resources designed for teaching game development.
 Questions? Issues? Suggestions?  
 Open an issue or reach out!
 
-**Made for game development education**
-
 ---
 
 ## Additional Resources
@@ -297,5 +217,3 @@ After completing these projects, students can:
 4. Join game jams (Ludum Dare, Global Game Jam)
 
 ---
-
-**Now pick a game and start coding!**
