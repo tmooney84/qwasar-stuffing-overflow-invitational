@@ -5,7 +5,16 @@ const CONFIG = {
     minPower: 5,         // Minimum launch power
     maxPower: 25,        // Maximum launch power
     gravity: 0.3,        // Gravity strength
-    targetDistance: 400  // Distance to target
+    targetDistance: 400, // Distance to target
+    // Turkey hopping parameters
+    turkeyHopStrengthMin: -6,    // Minimum upward velocity
+    turkeyHopStrengthMax: -8,    // Maximum upward velocity
+    turkeyHopDistanceMin: 1,     // Minimum horizontal velocity
+    turkeyHopDistanceMax: 2.5,   // Maximum horizontal velocity
+    turkeyGroundTimeMin: 30,     // Min frames between hops
+    turkeyGroundTimeMax: 90,     // Max frames between hops
+    turkeyMinX: 250,             // Left boundary
+    turkeyMaxX: 650              // Right boundary
 };
 
 let angle = 45;
@@ -44,10 +53,24 @@ function preload() {
 
 function setup() {
     createCanvas(800, 600);
-    
+
     // Create targets at different distances
     targets = [
-        { x: 400, y: height - 100, w: 60, h: 80, type: 'turkey', hit: false },
+        {
+            x: 400,
+            y: height - 100,
+            w: 60,
+            h: 80,
+            type: 'turkey',
+            hit: false,
+            // Hopping properties
+            groundY: height - 100,              // Original ground position
+            hopState: 'grounded',               // Current state: 'grounded' or 'hopping'
+            groundTimer: random(30, 90),        // Frames until next hop
+            vx: 0,                              // Horizontal velocity
+            vy: 0,                              // Vertical velocity
+            direction: random() < 0.5 ? -1 : 1  // Hop direction (left or right)
+        },
         { x: 550, y: height - 120, w: 100, h: 100, type: 'barn', hit: false }
     ];
 }
@@ -64,7 +87,10 @@ function draw() {
     
     // Draw catapult base
     drawCatapult();
-    
+
+    // Update target positions (turkey hopping)
+    updateTargets();
+
     // Draw targets
     drawTargets();
     
@@ -199,6 +225,59 @@ function updateProjectile() {
         gameState = 'aiming';
         projectile = null;
         launches++;
+    }
+}
+
+function updateTargets() {
+    for (let target of targets) {
+        // Skip non-turkeys and hit targets
+        if (target.type !== 'turkey' || target.hit) continue;
+
+        // State machine for hopping behavior
+        if (target.hopState === 'grounded') {
+            // COUNTDOWN TO NEXT HOP
+            target.groundTimer--;
+
+            if (target.groundTimer <= 0) {
+                // Initialize new hop
+                target.vy = random(CONFIG.turkeyHopStrengthMin, CONFIG.turkeyHopStrengthMax);
+                target.vx = target.direction * random(CONFIG.turkeyHopDistanceMin, CONFIG.turkeyHopDistanceMax);
+                target.hopState = 'hopping';
+            }
+
+        } else if (target.hopState === 'hopping') {
+            // PHYSICS SIMULATION
+            // Apply gravity
+            target.vy += CONFIG.gravity;
+
+            // Update position
+            target.x += target.vx;
+            target.y += target.vy;
+
+            // Check ground collision
+            if (target.y >= target.groundY) {
+                // Landed
+                target.y = target.groundY;
+                target.vx = 0;
+                target.vy = 0;
+                target.hopState = 'grounded';
+                target.groundTimer = random(CONFIG.turkeyGroundTimeMin, CONFIG.turkeyGroundTimeMax);
+
+                // Randomly change direction (30% chance)
+                if (random() < 0.3) {
+                    target.direction *= -1;
+                }
+            }
+
+            // Enforce boundaries
+            if (target.x < CONFIG.turkeyMinX) {
+                target.x = CONFIG.turkeyMinX;
+                target.direction = 1;  // Force rightward hops
+            } else if (target.x > CONFIG.turkeyMaxX) {
+                target.x = CONFIG.turkeyMaxX;
+                target.direction = -1;  // Force leftward hops
+            }
+        }
     }
 }
 
