@@ -25,6 +25,9 @@ let shootCooldown = 0;   // Frames until next shot allowed
 let pumpkinImg;
 let targetImgs = {};
 
+// Stars for space background
+let stars = [];
+
 function preload() {
     // Try to load images, fall back to shapes if not found
     try {
@@ -50,6 +53,16 @@ function preload() {
 function setup() {
     createCanvas(800, 600);
 
+    // Create stars for space background
+    for (let i = 0; i < 200; i++) {
+        stars.push({
+            x: random(width),
+            y: random(height - 100), // Don't put stars below the ground
+            size: random(1, 3),
+            brightness: random(150, 255)
+        });
+    }
+
     // Create targets - turkey flies in the sky
     targets = [
         {
@@ -69,8 +82,20 @@ function setup() {
 }
 
 function draw() {
-    // Sky and ground
-    background(135, 206, 235);
+    // Space background (dark blue to black gradient)
+    for (let i = 0; i < height - 80; i++) {
+        let inter = map(i, 0, height - 80, 0, 1);
+        let c = lerpColor(color(10, 10, 40), color(0, 0, 0), inter);
+        stroke(c);
+        line(0, i, width, i);
+    }
+
+    // Draw stars
+    noStroke();
+    for (let star of stars) {
+        fill(255, 255, 255, star.brightness);
+        ellipse(star.x, star.y, star.size, star.size);
+    }
 
     // Ground
     fill(101, 67, 33);
@@ -176,6 +201,63 @@ function drawShooter() {
 
     pop();
     pop();
+}
+
+function updateTargets() {
+    for (let target of targets) {
+        if (target.hit || target.type !== 'turkey') continue;
+
+        // Horizontal movement when not jumping
+        if (!target.isJumping) {
+            target.x += target.direction * target.speed;
+
+            // Reverse direction at boundaries
+            if (target.x > 650 || target.x < 300) {
+                target.direction *= -1;
+            }
+        }
+
+        // Jump timing
+        target.jumpTimer++;
+
+        // Start jump randomly
+        if (!target.isJumping && target.jumpTimer >= target.nextJumpTime) {
+            target.isJumping = true;
+            target.velocityY = -14; // Jump strength - high enough to clear barn but stay on screen
+
+            // Random jump direction: forward or backward
+            let jumpDirection = random() > 0.5 ? 1 : -1;
+            target.velocityX = jumpDirection * 5; // Horizontal jump speed
+
+            target.jumpTimer = 0;
+            target.nextJumpTime = random(90, 180); // Next jump in 1.5-3 seconds
+        }
+
+        // Apply physics when jumping
+        if (target.isJumping) {
+            target.velocityY += 0.4; // Gravity
+            target.y += target.velocityY;
+            target.x += target.velocityX; // Move horizontally during jump
+
+            // Keep turkey within screen boundaries
+            if (target.x < 50) {
+                target.x = 50;
+                target.velocityX = 0;
+            }
+            if (target.x > width - 50) {
+                target.x = width - 50;
+                target.velocityX = 0;
+            }
+
+            // Land back on ground
+            if (target.y >= target.baseY) {
+                target.y = target.baseY;
+                target.velocityY = 0;
+                target.velocityX = 0;
+                target.isJumping = false;
+            }
+        }
+    }
 }
 
 function drawTargets() {
